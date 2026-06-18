@@ -38,6 +38,6 @@ Scikit-learn
 Results:-
 The models successfully predicted customer churn and provided insights into factors that influence customer retention. The project demonstrates an end-to-end machine learning workflow, from data preprocessing and analysis to model development and evaluation.
 
-Author
+# Dataset sourced from a customer churn dataset obtained from Kaggle and used for educational purposes.
 
 Nikita
