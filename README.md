@@ -36,7 +36,9 @@ Matplotlib
 Scikit-learn
 
 Results:-
-The models successfully predicted customer churn and provided insights into factors that influence customer retention. The project demonstrates an end-to-end machine learning workflow, from data preprocessing and analysis to model development and evaluation.
+The models successfully predicted customer churn and provided insights into factors that influence customer retention. The project demonstrates an end-to-end machine learning workflow, from data preprocessing and analysis to model development and evaluation.## Results
+Successfully developed and evaluated machine learning models for customer churn prediction. The project involved data preprocessing, exploratory data analysis, feature engineering, and model training using Logistic Regression and Random Forest. The models were able to identify patterns associated with customer churn and provide insights to support customer retention strategies.
+
 
 # Dataset sourced from a customer churn dataset obtained from Kaggle and used for educational purposes.
 
