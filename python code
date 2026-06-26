@@ -1,1 +1,89 @@
+import pandas as pd
+import matplotlib.pyplot as plt
 
+df1 = pd.read_excel(Customer1.xlsx")
+df2 = pd.read_excel(Customer2.xlsx")
+
+df = pd.concat([df1, df2], ignore_index=True)
+
+print("Shape:", df.shape)
+print(df.head())
+print("\nMissing Values:")
+print(df.isnull().sum())
+print("\nDuplicates:", df.duplicated().sum())
+
+df = df.drop_duplicates()
+
+for col in df.select_dtypes(include=['number']).columns:
+    df[col] = df[col].fillna(df[col].median())
+
+for col in df.select_dtypes(include=['object', 'string']).columns:
+    df[col] = df[col].fillna(df[col].mode()[0])
+
+print("\nChurn Percentage:")
+print(df['Churn'].value_counts(normalize=True) * 100)
+
+df['Churn'].value_counts().plot(kind='bar')
+plt.title('Customer Churn Distribution')
+plt.show()
+
+pd.crosstab(df['Subscription Type'], df['Churn']).plot(kind='bar')
+plt.title('Churn by Subscription Type')
+plt.show()
+
+X = df.drop('Churn', axis=1)
+y = df['Churn']
+
+# Remove Customer ID if present
+if 'CustomerID' in X.columns:
+    X = X.drop('CustomerID', axis=1)
+
+if 'Customer ID' in X.columns:
+    X = X.drop('Customer ID', axis=1)
+
+X = pd.get_dummies(X, drop_first=True)
+
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.2,
+    random_state=42
+)
+
+from sklearn.linear_model import LogisticRegression
+
+lr = LogisticRegression(max_iter=2000)
+lr.fit(X_train, y_train)
+
+y_pred = lr.predict(X_test)
+
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+
+print("\nLogistic Regression Accuracy:")
+print(accuracy_score(y_test, y_pred))
+
+print("\nConfusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
+
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred))
+
+from sklearn.ensemble import RandomForestClassifier
+
+rf = RandomForestClassifier(random_state=42)
+rf.fit(X_train, y_train)
+
+y_pred_rf = rf.predict(X_test)
+
+print("\nRandom Forest Accuracy:")
+print("Logistic Regression Accuracy:", accuracy_score(y_test, y_pred))
+
+
+importance = pd.DataFrame({
+    'Feature': X.columns,
+    'Importance': rf.feature_importances_
+})
+
+print("\nTop 10 Important Features:")
+print(importance.sort_values(by='Importance', ascending=False).head(10))
